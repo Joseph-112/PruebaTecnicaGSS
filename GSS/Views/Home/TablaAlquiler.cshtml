@@ -1,0 +1,68 @@
+﻿@model IEnumerable<GSS.tabla_alquiler_Result>
+@{
+    ViewBag.Title = "Alquiler";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Tabla Alquiler</h2>
+<br />
+<form action="Filtrar">
+    <h3>Fecha inicio alquiler</h3>
+    <input type="date" name="fechaInicio" />
+
+    <h3>Fecha final alquiler</h3>
+    <input type="date" name="fechaFin" />
+    <input type="submit"/>
+    <br />
+</form>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.nombre)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.fecha_alquiler)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tiempo_alquiler)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.saldo)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.placa_carro)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.marca)
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fecha_alquiler)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tiempo_alquiler)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.saldo)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.placa_carro)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.marca)
+            </td>
+
+        </tr>
+    }
+
+</table>
+

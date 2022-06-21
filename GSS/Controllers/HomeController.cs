@@ -8,23 +8,45 @@ namespace GSS.Controllers
 {
     public class HomeController : Controller
     {
+        //Objeto referencia a entidades de base de datos
+        private ConcesionarioEntities db = new ConcesionarioEntities();
+
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult About()
+        public ActionResult TablaAlquiler()
         {
-            ViewBag.Message = "Your application description page.";
+            var tabla = db.tabla_alquiler().ToList();
+            return View(tabla);
 
-            return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Filtrar(DateTime fechaInicio, DateTime fechaFin)
         {
-            ViewBag.Message = "Your contact page.";
+            var tabla = db.tabla_alquiler().ToList();
 
-            return View();
+            if (fechaFin != null)
+            {
+                List<tabla_alquiler_Result> tFiltrada = new List<tabla_alquiler_Result>();
+                foreach (var elemento in tabla)
+                {
+                    if (elemento.fecha_alquiler >= fechaInicio && elemento.fecha_alquiler < fechaFin)
+                    {
+                        tFiltrada.Add(elemento);
+                    }
+                }
+
+                return View(tFiltrada);
+            }
+            else
+            {
+                return View(tabla);
+            }
+
+            
         }
+
     }
 }

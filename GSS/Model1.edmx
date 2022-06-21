@@ -1,0 +1,310 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="ConcesionarioModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="alquiler">
+          <Key>
+            <PropertyRef Name="id_alquiler" />
+          </Key>
+          <Property Name="id_alquiler" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="tiempo" Type="tinyint" Nullable="false" />
+          <Property Name="valor_total" Type="float" Nullable="false" />
+          <Property Name="saldo" Type="float" Nullable="false" />
+          <Property Name="abono_inicial" Type="float" Nullable="false" />
+          <Property Name="devuelto" Type="varchar" MaxLength="2" Nullable="false" />
+          <Property Name="cedula_cliente" Type="varchar" MaxLength="9" Nullable="false" />
+          <Property Name="placa_carro" Type="varchar" MaxLength="7" Nullable="false" />
+        </EntityType>
+        <EntityType Name="carro">
+          <Key>
+            <PropertyRef Name="placa" />
+          </Key>
+          <Property Name="placa" Type="varchar" MaxLength="7" Nullable="false" />
+          <Property Name="marca" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="modelo" Type="varchar" MaxLength="4" />
+          <Property Name="costo" Type="float" Nullable="false" />
+          <Property Name="disponible" Type="varchar" MaxLength="2" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="cedula" />
+          </Key>
+          <Property Name="cedula" Type="varchar" MaxLength="9" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="telefono_1" Type="varchar" MaxLength="15" Nullable="false" />
+          <Property Name="telefono_2" Type="varchar" MaxLength="15" />
+        </EntityType>
+        <EntityType Name="pagos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="fecha" Type="date" Nullable="false" />
+          <Property Name="valor" Type="float" Nullable="false" />
+          <Property Name="id_alquiler" Type="int" Nullable="false" />
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+        </EntityType>
+        <Association Name="fk_alquiler_carro">
+          <End Role="carro" Type="Self.carro" Multiplicity="1" />
+          <End Role="alquiler" Type="Self.alquiler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="carro">
+              <PropertyRef Name="placa" />
+            </Principal>
+            <Dependent Role="alquiler">
+              <PropertyRef Name="placa_carro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_alquiler_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="1" />
+          <End Role="alquiler" Type="Self.alquiler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="cedula" />
+            </Principal>
+            <Dependent Role="alquiler">
+              <PropertyRef Name="cedula_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_pagos_alquiler">
+          <End Role="alquiler" Type="Self.alquiler" Multiplicity="1" />
+          <End Role="pagos" Type="Self.pagos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="alquiler">
+              <PropertyRef Name="id_alquiler" />
+            </Principal>
+            <Dependent Role="pagos">
+              <PropertyRef Name="id_alquiler" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="tabla_alquiler" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" />
+        <EntityContainer Name="ConcesionarioModelStoreContainer">
+          <EntitySet Name="alquiler" EntityType="Self.alquiler" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="carro" EntityType="Self.carro" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="pagos" EntityType="Self.pagos" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_alquiler_carro" Association="Self.fk_alquiler_carro">
+            <End Role="carro" EntitySet="carro" />
+            <End Role="alquiler" EntitySet="alquiler" />
+          </AssociationSet>
+          <AssociationSet Name="fk_alquiler_cliente" Association="Self.fk_alquiler_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="alquiler" EntitySet="alquiler" />
+          </AssociationSet>
+          <AssociationSet Name="fk_pagos_alquiler" Association="Self.fk_pagos_alquiler">
+            <End Role="alquiler" EntitySet="alquiler" />
+            <End Role="pagos" EntitySet="pagos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ConcesionarioModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="alquiler">
+          <Key>
+            <PropertyRef Name="id_alquiler" />
+          </Key>
+          <Property Name="id_alquiler" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="tiempo" Type="Byte" Nullable="false" />
+          <Property Name="valor_total" Type="Double" Nullable="false" />
+          <Property Name="saldo" Type="Double" Nullable="false" />
+          <Property Name="abono_inicial" Type="Double" Nullable="false" />
+          <Property Name="devuelto" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="cedula_cliente" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="placa_carro" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="carro" Relationship="Self.fk_alquiler_carro" FromRole="alquiler" ToRole="carro" />
+          <NavigationProperty Name="cliente" Relationship="Self.fk_alquiler_cliente" FromRole="alquiler" ToRole="cliente" />
+          <NavigationProperty Name="pagos" Relationship="Self.fk_pagos_alquiler" FromRole="alquiler" ToRole="pagos" />
+        </EntityType>
+        <EntityType Name="carro">
+          <Key>
+            <PropertyRef Name="placa" />
+          </Key>
+          <Property Name="placa" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="marca" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="modelo" Type="String" MaxLength="4" FixedLength="false" Unicode="false" />
+          <Property Name="costo" Type="Double" Nullable="false" />
+          <Property Name="disponible" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="alquiler" Relationship="Self.fk_alquiler_carro" FromRole="carro" ToRole="alquiler" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="cedula" />
+          </Key>
+          <Property Name="cedula" Type="String" MaxLength="9" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono_1" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono_2" Type="String" MaxLength="15" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="alquiler" Relationship="Self.fk_alquiler_cliente" FromRole="cliente" ToRole="alquiler" />
+        </EntityType>
+        <EntityType Name="pagos">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="fecha" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="valor" Type="Double" Nullable="false" />
+          <Property Name="id_alquiler" Type="Int32" Nullable="false" />
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <NavigationProperty Name="alquiler" Relationship="Self.fk_pagos_alquiler" FromRole="pagos" ToRole="alquiler" />
+        </EntityType>
+        <Association Name="fk_alquiler_carro">
+          <End Role="carro" Type="Self.carro" Multiplicity="1" />
+          <End Role="alquiler" Type="Self.alquiler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="carro">
+              <PropertyRef Name="placa" />
+            </Principal>
+            <Dependent Role="alquiler">
+              <PropertyRef Name="placa_carro" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_alquiler_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="1" />
+          <End Role="alquiler" Type="Self.alquiler" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="cedula" />
+            </Principal>
+            <Dependent Role="alquiler">
+              <PropertyRef Name="cedula_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_pagos_alquiler">
+          <End Role="alquiler" Type="Self.alquiler" Multiplicity="1" />
+          <End Role="pagos" Type="Self.pagos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="alquiler">
+              <PropertyRef Name="id_alquiler" />
+            </Principal>
+            <Dependent Role="pagos">
+              <PropertyRef Name="id_alquiler" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ConcesionarioEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="alquiler" EntityType="Self.alquiler" />
+          <EntitySet Name="carro" EntityType="Self.carro" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" />
+          <EntitySet Name="pagos" EntityType="Self.pagos" />
+          <AssociationSet Name="fk_alquiler_carro" Association="Self.fk_alquiler_carro">
+            <End Role="carro" EntitySet="carro" />
+            <End Role="alquiler" EntitySet="alquiler" />
+          </AssociationSet>
+          <AssociationSet Name="fk_alquiler_cliente" Association="Self.fk_alquiler_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="alquiler" EntitySet="alquiler" />
+          </AssociationSet>
+          <AssociationSet Name="fk_pagos_alquiler" Association="Self.fk_pagos_alquiler">
+            <End Role="alquiler" EntitySet="alquiler" />
+            <End Role="pagos" EntitySet="pagos" />
+          </AssociationSet>
+          <FunctionImport Name="tabla_alquiler" ReturnType="Collection(ConcesionarioModel.tabla_alquiler_Result)" />
+        </EntityContainer>
+        <ComplexType Name="tabla_alquiler_Result">
+          <Property Type="String" Name="cedula" Nullable="false" MaxLength="9" />
+          <Property Type="String" Name="nombre" Nullable="false" MaxLength="50" />
+          <Property Type="DateTime" Name="fecha_alquiler" Nullable="false" />
+          <Property Type="Byte" Name="tiempo_alquiler" Nullable="false" />
+          <Property Type="Double" Name="saldo" Nullable="false" />
+          <Property Type="String" Name="placa_carro" Nullable="false" MaxLength="7" />
+          <Property Type="String" Name="marca" Nullable="false" MaxLength="10" />
+        </ComplexType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ConcesionarioModelStoreContainer" CdmEntityContainer="ConcesionarioEntities">
+          <EntitySetMapping Name="alquiler">
+            <EntityTypeMapping TypeName="ConcesionarioModel.alquiler">
+              <MappingFragment StoreEntitySet="alquiler">
+                <ScalarProperty Name="id_alquiler" ColumnName="id_alquiler" />
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="tiempo" ColumnName="tiempo" />
+                <ScalarProperty Name="valor_total" ColumnName="valor_total" />
+                <ScalarProperty Name="saldo" ColumnName="saldo" />
+                <ScalarProperty Name="abono_inicial" ColumnName="abono_inicial" />
+                <ScalarProperty Name="devuelto" ColumnName="devuelto" />
+                <ScalarProperty Name="cedula_cliente" ColumnName="cedula_cliente" />
+                <ScalarProperty Name="placa_carro" ColumnName="placa_carro" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="carro">
+            <EntityTypeMapping TypeName="ConcesionarioModel.carro">
+              <MappingFragment StoreEntitySet="carro">
+                <ScalarProperty Name="placa" ColumnName="placa" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+                <ScalarProperty Name="modelo" ColumnName="modelo" />
+                <ScalarProperty Name="costo" ColumnName="costo" />
+                <ScalarProperty Name="disponible" ColumnName="disponible" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="cliente">
+            <EntityTypeMapping TypeName="ConcesionarioModel.cliente">
+              <MappingFragment StoreEntitySet="cliente">
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="telefono_1" ColumnName="telefono_1" />
+                <ScalarProperty Name="telefono_2" ColumnName="telefono_2" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="pagos">
+            <EntityTypeMapping TypeName="ConcesionarioModel.pagos">
+              <MappingFragment StoreEntitySet="pagos">
+                <ScalarProperty Name="fecha" ColumnName="fecha" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+                <ScalarProperty Name="id_alquiler" ColumnName="id_alquiler" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="tabla_alquiler" FunctionName="ConcesionarioModel.Store.tabla_alquiler">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="ConcesionarioModel.tabla_alquiler_Result">
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="fecha_alquiler" ColumnName="fecha_alquiler" />
+                <ScalarProperty Name="tiempo_alquiler" ColumnName="tiempo_alquiler" />
+                <ScalarProperty Name="saldo" ColumnName="saldo" />
+                <ScalarProperty Name="placa_carro" ColumnName="placa_carro" />
+                <ScalarProperty Name="marca" ColumnName="marca" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Ninguno" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
